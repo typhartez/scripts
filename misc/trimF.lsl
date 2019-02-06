@@ -1,12 +1,13 @@
 // trimF is work of Aine Caoimhe (c. LACM)
-// added removal of final "." when no ecimal part
+// added removal of final "." when no decimal part
+// fixed 0.0x0
 string trimF(float f) {
     integer len;
     string res;
     integer new = llRound(f*10000);
     integer neg = (new < 0);
     if (new < 0) new *= -1;
-    if (!new) res = "0";
+    if (!new) return "0";
     else if (new < 10) res = "0.000"+(string)new;
     else if (new < 100) res = "0.00" + (string)new;
     else if (new < 1000) res = "0.0" + (string)new;
@@ -16,8 +17,11 @@ string trimF(float f) {
         len = llStringLength(res);
         res = llGetSubString(res, 0, len-5)+"."+llGetSubString(res, len-4, len-1);
     }
-    while (llGetSubString(res, len, len) == "0") res = llGetSubString(res, 0, --len);
-    if (llGetSubString(res, len, len) == ".") res = llGetSubString(res, 0, len-1);
+    while (llGetSubString(res, -1, -1) == "0") {
+        res = llGetSubString(res, 0, len-2);
+        len = llStringLength(res);
+    }
+    if (llGetSubString(res, -1, -1) == ".") res = llGetSubString(res, 0, -2);
     if (neg) res = "-"+res;
     return res;
 }
