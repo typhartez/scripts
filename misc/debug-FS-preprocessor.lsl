@@ -6,7 +6,6 @@
 #define DBGLIST(_m, _r, _s) _dbglist(_m, _r, _s)
 
 _dbglist(string msg, list r, integer stride) {
-    if (!debug) return;
     DBG(msg);
     string obj = llGetObjectName();
     llSetObjectName(" ");
